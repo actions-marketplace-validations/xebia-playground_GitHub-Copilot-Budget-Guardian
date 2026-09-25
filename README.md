@@ -2,9 +2,9 @@
 
 GitHub Copilot Budget Guardian is a GitHub Action for managing Copilot Enterprise budgets as code. Define desired budgets in a CSV file, and the Action validates the input, compares it with Enterprise state, applies necessary changes, and produces an audit trail.
 
-[![CI](https://github.com/xebia-playground/GitHub-Copilot-Budget-Guardian/actions/workflows/test.yml/badge.svg)](https://github.com/xebia-playground/GitHub-Copilot-Budget-Guardian/actions/workflows/test.yml)
+[![CI](https://github.com/xebia-actions/GitHub-Copilot-Budget-Guardian/actions/workflows/test.yml/badge.svg)](https://github.com/xebia-actions/GitHub-Copilot-Budget-Guardian/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Release](https://img.shields.io/github/v/release/xebia-playground/GitHub-Copilot-Budget-Guardian)](https://github.com/xebia-playground/GitHub-Copilot-Budget-Guardian/releases)
+[![Release](https://img.shields.io/github/v/release/xebia-actions/GitHub-Copilot-Budget-Guardian)](https://github.com/xebia-actions/GitHub-Copilot-Budget-Guardian/releases)
 
 ## Key Capabilities
 
@@ -45,11 +45,11 @@ GitHub Copilot Budget Guardian is a GitHub Action for managing Copilot Enterpris
      sync:
        runs-on: ubuntu-latest
        steps:
-         - uses: actions/checkout@v4
+         - uses: actions/checkout@v7.0.1
 
          - name: Sync Copilot budgets
            id: guardian
-           uses: xebia-playground/GitHub-Copilot-Budget-Guardian@v1.0.0
+           uses: xebia-actions/GitHub-Copilot-Budget-Guardian@v1.0.0
            with:
              github-token: "${{ secrets.ENTERPRISE_ADMIN_PAT }}"
              enterprise-slug: "${{ secrets.ENTERPRISE_SLUG }}"
@@ -57,7 +57,7 @@ GitHub Copilot Budget Guardian is a GitHub Action for managing Copilot Enterpris
              dry-run: "true"
 
          - name: Upload reports
-           uses: actions/upload-artifact@v4
+           uses: actions/upload-artifact@v7.0.1
            with:
              name: budget-sync-report
              path: artifacts/
@@ -128,7 +128,7 @@ Successful runs generate these files in `artifacts/`:
 - **`budget-report.json`** - Structured `summary`, `synchronization`, and `input` data for integrations.
 - **`budget-report.csv`** - `username`, `action`, `requested_budget`, `previous_budget`, and `error` columns.
 
-The reports include CREATED, UPDATED, SKIPPED, and FAILED results where applicable. Upload `artifacts/` with `actions/upload-artifact@v4` to retain them with the workflow run.
+The reports include CREATED, UPDATED, SKIPPED, and FAILED results where applicable. Upload `artifacts/` with `actions/upload-artifact@v7.0.1` to retain them with the workflow run.
 
 ## GitHub Job Summary
 
@@ -173,7 +173,7 @@ on:
 | Budget validation fails | Ensure every row has a username and numeric, non-negative budget, with no duplicate usernames. |
 | Budget file not found | Check `budget-file`; it is resolved relative to the repository working directory. |
 | CSV parsing or encoding errors | Save the file as UTF-8 and check its headers and quoting. |
-| Reports missing | Add an `actions/upload-artifact@v4` step with `path: artifacts/`. |
+| Reports missing | Add an `actions/upload-artifact@v7.0.1` step with `path: artifacts/`. |
 | Notifications not sent | Check the relevant webhook URL or SMTP variables. Missing notification configuration is skipped by design. |
 | API rate limit exceeded | Reduce the workflow frequency or space out runs. |
 | Production fetch failure | Verify Enterprise connectivity and PAT permissions. No write operations are attempted after this failure. |
@@ -193,6 +193,7 @@ on:
 - Use HTTPS webhook URLs and verify they belong to the intended workspace.
 - Retain reports and Job Summaries according to your audit requirements.
 - Reports do not include PATs, tokens, or SMTP passwords.
+- The project also includes GitHub Actions dependency/security checks, pinned and locked Actions for reproducible workflows, and automated SemVer/release consistency validation.
 
 ## Contributing
 
